@@ -1,0 +1,8 @@
+[
+    { "s_id": "1", "s_name": "Ravi Iyer", "store_name": "AutopartsAsia", "email": "Ravi@gmail.com", "sales_region": "Asia", "created_at": "2024-11-22" },
+    { "s_id": "2", "s_name": "Takeshi Sato", "store_name": "BestTech.asia", "email": "Takeshi@gmail.com", "sales_region": "Asia", "created_at": "2024-11-20" },
+    { "s_id": "3", "s_name": "Chen Huang", "store_name": "Books.online", "email": "Chen@gmail.com", "sales_region": "Europe, Asia", "created_at": "2024-11-20" },
+    { "s_id": "4", "s_name": "Ali Rahman", "store_name": "LifeHackStoreAsia", "email": "Ali@gmail.com", "sales_region": "Asia", "created_at": "2024-11-20" },
+    { "s_id": "5", "s_name": "Joon Park", "store_name": "WorkingEquipmentAsia", "email": "Joon@gmail.com", "sales_region": "Asia", "created_at": "2024-11-20" },
+    { "s_id": "6", "s_name": "Arjun Patel", "store_name": "PrankStuff.asia", "email": "Arjun@gmail.com", "sales_region": "Asia", "created_at": "2024-11-20" }
+]

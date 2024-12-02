@@ -1,0 +1,8 @@
+[
+    { "_id": "1", "name": "Isabella Rossi", "email": "Isabella@gmail.com", "location": "Italy", "created_at": "2024-11-22" },
+    { "_id": "2", "name": "Emma García", "email": "Emma@gmail.com", "location": "Spain", "created_at": "2024-11-20" },
+    { "_id": "3", "name": "Evelyn Schmidt", "email": "Evelyn@gmail.com", "location": "Germany", "created_at": "2024-11-20" },
+    { "_id": "4", "name": "Anastasia Dimitriou", "email": "Anastasia@gmail.com", "location": "Greece", "created_at": "2024-11-20" },
+    { "_id": "5", "name": "Amelia Dubois", "email": "Amelia@gmail.com", "location": "France", "created_at": "2024-11-20" },
+    { "_id": "6", "name": "Noah Johansson", "email": "Noah@gmail.com", "location": "Sweden", "created_at": "2024-11-20" }
+]

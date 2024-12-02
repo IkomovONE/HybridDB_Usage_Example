@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data by Location</title>
+</head>
+<body>
+
+    <h1>Select Location</h1>
+    <form method="POST">
+        <label for="db_choice">Which database to show?</label>
+        <select name="db_choice" id="db_choice">
+            <option value="Europe(noSQL)">Europe(noSQL)</option>
+            <option value="Asia(SQL)">Asia(SQL)</option>
+            <option value="All databases">All databases</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
+
+    {% if users %}
+    <h2>Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Location</th>
+            <th>Created At</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+
+            <td>{{ user._id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.location }}</td>
+            <td>{{ user.created_at }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if sellers %}
+    <h2>Sellers</h2>
+    <table border="1">
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Store Name</th>
+            <th>Email</th>
+            <th>Sales Region</th>
+            <th>Created At</th>
+
+        </tr>
+        {% for seller in sellers %}
+        <tr>
+            <td>{{ seller.s_id }}</td>
+            <td>{{ seller.s_name }}</td>
+            <td>{{ seller.store_name }}</td>
+            <td>{{ seller.email }}</td>
+            <td>{{ seller.sales_region }}</td>
+            <td>{{ seller.created_at }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    {% endif %}
+
+    {% if products %}
+    <h2>Products</h2>
+    <table border="1">
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+        </tr>
+
+        {% for product in products %}
+        <tr>
+            <td>{{ product._id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.category }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if orders %}
+    <h2>Orders</h2>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Seller Name</th>
+            <th>Product Names</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+
+            <td>{{ order._id }}</td>
+            <td>{{ order.user_id }}</td>
+            <td>{{ order.seller_name }}</td>
+            <td>{{ order.products_names }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.order_date }}</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>
