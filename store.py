@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient           #Importing necessary libraries
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 
 
@@ -64,6 +65,8 @@ orders_eu = europe_db["Orders"]   #orders
 @app.route("/", methods=["GET", "POST"])    #creating a route
 def home():
     users, sellers, products, orders = None, None, None, None
+
+    
 
 
 
@@ -194,31 +197,127 @@ def home():
                 products.append(i)
 
 
-            
-
-
-
-
-
-            
-
-    
-            
-        
+             
 
     return render_template("index.html", users=users, sellers=sellers, products=products, orders=orders)  #rendering using index.html
 
 
-@app.route('/sql/users', methods=['GET'])
-def get_sql_users():
-    users = User.query.all()
-    return jsonify([{
-        'id': user.id,
-        'name': user.name,
-        'email': user.email,
-        'location': user.location,
-        'created_at': user.created_at.strftime('%Y-%m-%d')
-    } for user in users])
+
+
+
+
+
+
+
+@app.route("/create", methods=["GET", "POST"])
+
+def create():
+
+    status= ""
+
+    if request.method == "POST":
+
+        db_choice = request.form["db_choice"]
+
+        table_choice = request.form["table_choice"]
+
+        json_lines= request.form["json_lines"]
+
+        
+
+        
+
+
+        try:
+            # Convert JSON string to a Python list
+            data_list = json.loads(json_lines)
+
+
+
+            if db_choice == "Europe(noSQL)":
+
+                
+
+                if table_choice== "Users":
+                    
+                    users_eu.insert_many(data_list)
+
+                elif table_choice== "Sellers":
+                    
+                    sellers_eu.insert_many(data_list)
+
+                elif table_choice== "Orders":
+                    
+                    orders_eu.insert_many(data_list)
+
+                elif table_choice== "Products":
+                    
+                    products_eu.insert_many(data_list)
+
+                    
+
+                
+
+                status= "true"
+
+        except json.JSONDecodeError as e:
+            print(e)
+            status = "false"
+
+
+
+        
+
+        
+
+
+
+
+
+
+        
+        
+
+                
+
+
+       
+
+        
+
+
+
+
+        pass
+    return render_template("create.html", success=status)
+
+
+
+
+
+
+
+
+
+
+
+@app.route("/edit", methods=["GET", "POST"])
+def update():
+    if request.method == "POST":
+        # Handle form submission for updating data
+        pass
+    return render_template("edit.html")
+
+
+@app.route("/delete", methods=["GET", "POST"])
+def delete():
+    if request.method == "POST":
+        # Handle form submission for deleting data
+        pass
+    return render_template("delete.html")
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)    #running the app

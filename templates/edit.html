@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body>
+
+    <h1>Select input database</h1>
+    <form method="POST">
+        <label for="db_choice">Which database to edit?</label>
+        <select name="db_choice" id="db_choice">
+            <option value="Europe(noSQL)">Europe(noSQL)</option>
+            <option value="Asia(SQL)">Asia(SQL)</option>
+        </select>
+
+        <br></br>
+
+        <label for="table_choice">Which table to edit?</label>
+        <select name="table_choice" id="table_choice">
+            <option value="Users">Users</option>
+            <option value="Sellers">Sellers</option>
+            <option value="Orders">Orders</option>
+            <option value="Products">Products</option>
+        </select>
+
+        <br></br>
+
+        <label for="json_lines" style="margin-right: 5em">Paste/enter list of JSON lines that would go into the table</label>
+        <input name="json_lines" id="json_lines" style="height: 50px; width: 700px;" placeholder='[
+        { "_id": "15", "name": "Aiko Tanaka", "email": "Aiko@gmail.com", "location": "Japan", "created_at": "2024-11-22" },
+        { "_id": "22", "name": "Mei Wong", "email": "Mei@gmail.com", "location": "China", "created_at": "2024-11-20" }
+    ]'>
+            
+    </input>
+
+        <br></br>
+
+        <button type="submit" style="height: 50px; width: 100px; font-size: large;">Submit</button>
+    </form>
+
+    
+
+
+    <br></br>
+
+    <button onclick="location.href='/'" style="width: 10cm; height: 3cm; margin-left: 10em; font-size: large">Want to see changes? Go to main page</button>
+
+
+    {% if success== "" %}
+
+    <h2></h2>
+    
+    {% endif %}
+
+    {% if success== "true" %}
+
+    <h2>Addition successful</h2>
+    
+    {% endif %}
+
+    {% if success== "false" %}
+
+    <h2>Error, try again!</h2>
+    
+    {% endif %}
+
+    
+</body>
+</html>

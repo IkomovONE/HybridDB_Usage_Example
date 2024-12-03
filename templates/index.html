@@ -7,16 +7,29 @@
 </head>
 <body>
 
-    <h1>Select Location</h1>
-    <form method="POST">
-        <label for="db_choice">Which database to show?</label>
-        <select name="db_choice" id="db_choice">
-            <option value="Europe(noSQL)">Europe(noSQL)</option>
-            <option value="Asia(SQL)">Asia(SQL)</option>
-            <option value="All databases">All databases</option>
-        </select>
-        <button type="submit">Submit</button>
-    </form>
+
+
+    <h1>Select Database</h1>
+
+    <div>
+        <form method="POST">
+            <label for="db_choice">Which database to show?</label>
+            <select name="db_choice" id="db_choice">
+                <option value="Europe(noSQL)">Europe(noSQL)</option>
+                <option value="Asia(SQL)">Asia(SQL)</option>
+                <option value="All databases">All databases</option>
+            </select>
+            <button type="submit">Submit</button>
+            
+        </form>
+
+        <button onclick="location.href='/create'" style="width: 3cm; height: 0.8cm; margin-left: 40em; font-size: large">Insert Data</button>
+        <button onclick="location.href='/update'" style="width: 3cm; height: 0.8cm; margin-left: 5em; font-size: large">Edit Data</button>
+        <button onclick="location.href='/delete'" style="width: 3cm; height: 0.8cm; margin-left: 5em; font-size: large">Delete Data</button>
+
+        
+        
+    </div>
 
 
     {% if users %}
