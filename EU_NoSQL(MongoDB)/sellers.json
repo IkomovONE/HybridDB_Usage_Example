@@ -1,8 +1,8 @@
 [
-    { "s_id": "1", "s_name": "Leon Dupont", "store_name": "AutopartsEU", "email": "Leon@gmail.com", "sales_region": "Europe", "created_at": "2024-11-22" },
-    { "s_id": "2", "s_name": "Elias Koskinen", "store_name": "BestTech.eu", "email": "Elias@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
-    { "s_id": "3", "s_name": "Ronan Gallagher", "store_name": "Books.online", "email": "Ronan@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
-    { "s_id": "4", "s_name": "Oliver Bauer", "store_name": "LifeHackStore", "email": "Oliver@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
-    { "s_id": "5", "s_name": "Matteo Ricci", "store_name": "WorkingEquipment", "email": "Matteo@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
-    { "s_id": "6", "s_name": "Lucas Moreau", "store_name": "PrankStuff.eu", "email": "Lucas@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" }
+    { "_id": "1", "s_name": "Leon Dupont", "store_name": "AutopartsEU", "email": "Leon@gmail.com", "sales_region": "Europe", "created_at": "2024-11-22" },
+    { "_id": "2", "s_name": "Elias Koskinen", "store_name": "BestTech.eu", "email": "Elias@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
+    { "_id": "3", "s_name": "Ronan Gallagher", "store_name": "Books.online", "email": "Ronan@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
+    { "_id": "4", "s_name": "Oliver Bauer", "store_name": "LifeHackStore", "email": "Oliver@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
+    { "_id": "5", "s_name": "Matteo Ricci", "store_name": "WorkingEquipment", "email": "Matteo@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" },
+    { "_id": "6", "s_name": "Lucas Moreau", "store_name": "PrankStuff.eu", "email": "Lucas@gmail.com", "sales_region": "Europe", "created_at": "2024-11-20" }
 ]

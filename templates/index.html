@@ -12,19 +12,25 @@
     <h1>Select Database</h1>
 
     <div>
-        <form method="POST">
+        <form method="POST" id="dbForm">
             <label for="db_choice">Which database to show?</label>
-            <select name="db_choice" id="db_choice">
-                <option value="Europe(noSQL)">Europe(noSQL)</option>
-                <option value="Asia(SQL)">Asia(SQL)</option>
-                <option value="All databases">All databases</option>
+            <select name="db_choice" id="db_choice" style="width: 5cm;">
+                <option value="Europe(noSQL)" {% if db_choice == "Europe(noSQL)" %}selected{% endif %}>Europe(noSQL)</option>
+                <option value="Asia(SQL)" {% if db_choice == "Asia(SQL)" %}selected{% endif %}>Asia(SQL)</option>
+                <option value="All databases" {% if db_choice == "All databases" %}selected{% endif %}>All databases</option>
             </select>
-            <button type="submit">Submit</button>
+            
             
         </form>
 
+        <script>
+            document.getElementById('db_choice').addEventListener('change', function() {
+                document.getElementById('dbForm').submit();
+            });
+        </script>
+
         <button onclick="location.href='/create'" style="width: 3cm; height: 0.8cm; margin-left: 40em; font-size: large">Insert Data</button>
-        <button onclick="location.href='/update'" style="width: 3cm; height: 0.8cm; margin-left: 5em; font-size: large">Edit Data</button>
+        <button onclick="location.href='/edit'" style="width: 3cm; height: 0.8cm; margin-left: 5em; font-size: large">Edit Data</button>
         <button onclick="location.href='/delete'" style="width: 3cm; height: 0.8cm; margin-left: 5em; font-size: large">Delete Data</button>
 
         
@@ -71,7 +77,7 @@
         </tr>
         {% for seller in sellers %}
         <tr>
-            <td>{{ seller.s_id }}</td>
+            <td>{{ seller._id }}</td>
             <td>{{ seller.s_name }}</td>
             <td>{{ seller.store_name }}</td>
             <td>{{ seller.email }}</td>

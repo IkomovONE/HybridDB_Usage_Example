@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body>
+
+    <h1>Edit the DB entry</h1>
+
+    <br></br>
+
+    <form method="POST" action="/update">
+        <input type="hidden" name="db_choice" value="{{ db_choice }}">
+        <input type="hidden" name="table_choice" value="{{ table_choice }}">
+        
+        
+        <label for="json_data">Edit Data (in JSON format):</label>
+        <textarea name="json_data" id="json_data" style="height: 13px; width: 700px;">
+            {{ record | tojson }}
+        </textarea>
+        
+        <button type="submit">Update Record</button>
+    </form>
+
+    
+
+
+    <br></br>
+
+    <button onclick="location.href='/'" style="width: 10cm; height: 3cm; margin-left: 10em; font-size: large">Want to see changes? Go to main page</button>
+
+
+    {% if status== "" %}
+
+    <h2></h2>
+    
+    {% endif %}
+
+    {% if status== "true" %}
+
+    <h2>Update successful</h2>
+    
+    {% endif %}
+
+    {% if status== "false" %}
+
+    <h2>Error, try again!</h2>
+    
+    {% endif %}
+
+    
+</body>
+</html>
