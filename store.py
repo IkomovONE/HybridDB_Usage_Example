@@ -117,6 +117,7 @@ def home():
         for user in User.query.all()
     ]
 
+
     sellers_SQL = [      ## creating SQL query for sellers
         {
             "_id": seller.id,
@@ -171,7 +172,7 @@ def home():
 
 
     
-
+##POST request starting here
 
 
     if request.method == "POST":  #using POST method
@@ -386,6 +387,7 @@ def create():
                     for entry in data_list:
 
                         created_at_date = datetime.strptime(entry["created_at"], "%Y-%m-%d").date()
+
                         new_seller = Seller(
                             id=entry.get("_id"),
                             name=entry["name"],
@@ -401,6 +403,7 @@ def create():
                     for entry in data_list:
 
                         created_at_date = datetime.strptime(entry["created_at"], "%Y-%m-%d").date()
+
                         new_order = Product(
                             id=entry.get("_id"),
                             name=entry["name"],
@@ -415,6 +418,7 @@ def create():
                     for entry in data_list:
 
                         created_at_date = datetime.strptime(entry["created_at"], "%Y-%m-%d").date()
+
                         new_product = Order(
                             id=entry.get("_id"),
                             user_id=entry["user_id"],
@@ -434,8 +438,6 @@ def create():
         except json.JSONDecodeError as e:   #Simple error handling
             print(e)
             status = "false"
-
-
 
 
         pass
@@ -467,19 +469,24 @@ def edit():
 
         try:
             
-            if db_choice == "Europe(noSQL)":   ##Finding the row in mongoDB
+            if db_choice == "Europe(noSQL)":   ##Finding the row in mongoDB using ID
+
                 if table_choice == "Users":
                     record = users_eu.find_one({"_id": row_ID}) 
+
                 elif table_choice == "Sellers":
                     record = sellers_eu.find_one({"_id": row_ID}) 
+
                 elif table_choice == "Orders":
                     record = orders_eu.find_one({"_id": row_ID}) 
+
                 elif table_choice == "Products":
                     record = products_eu.find_one({"_id": row_ID})  
 
             elif db_choice == "Asia(SQL)":
                 if table_choice == "Users":
                     record = User.query.get(row_ID)  ## Finding the row in SQL database
+
                     record = {     ##Initializing simple structure for fetching
                         "id": record.id,
                         "name": record.name,
@@ -490,6 +497,7 @@ def edit():
 
                 if table_choice == "Sellers":
                     record = Seller.query.get(row_ID)  
+
                     record = {
 
                         "id": record.id,
@@ -503,6 +511,7 @@ def edit():
 
                 if table_choice == "Orders":
                     record = Order.query.get(row_ID)  
+
                     record = {
                         "id": record.id,
                         "userId": record.userID,
@@ -514,6 +523,7 @@ def edit():
 
                 if table_choice == "Products":
                     record = Product.query.get(row_ID)  
+
                     record = {
 
                         "id": record.id,
@@ -556,36 +566,43 @@ def update():
                     {"_id": updated_data["_id"]},  
                     {"$set": updated_data}         
                 )
+
                 if result.matched_count > 0:   ##Determining status based on the result
                     status= "true" 
                 else:
                     status= "false"
 
             if table_choice == "Sellers":
+
                 result = sellers_eu.update_one(
                     {"_id": updated_data["_id"]},  
                     {"$set": updated_data}         
                 )
+
                 if result.matched_count > 0:
                     status= "true" 
                 else:
                     status= "false"
 
             if table_choice == "Orders":
+
                 result = orders_eu.update_one(
                     {"_id": updated_data["_id"]},  
                     {"$set": updated_data}         
                 )
+
                 if result.matched_count > 0:
                     status= "true" 
                 else:
                     status= "false"
 
             if table_choice == "Products":
+
                 result = products_eu.update_one(
                     {"_id": updated_data["_id"]},  
                     {"$set": updated_data}         
                 )
+
                 if result.matched_count > 0:
                     status= "true" 
                 else:
@@ -602,6 +619,7 @@ def update():
                     record.email = updated_data["email"]
                     record.location = updated_data["location"]
                     record.created_at = datetime.strptime(updated_data["created_at"], "%Y-%m-%d").date()
+
                     db.session.commit()  ##Commiting the update
                     status= "true"  
                 else:
@@ -616,6 +634,7 @@ def update():
                     record.email = updated_data["email"]
                     record.sales_region = updated_data["sales_region"]
                     record.created_at = datetime.strptime(updated_data["created_at"], "%Y-%m-%d").date()
+
                     db.session.commit()
                     status= "true"  
                 else:
@@ -629,6 +648,7 @@ def update():
                     record.sellerName = updated_data["sellerName"]
                     record.Quantity = updated_data["Quantity"]
                     record.order_date = datetime.strptime(updated_data["orderDate"], "%Y-%m-%d").date()
+
                     db.session.commit()
                     status= "true"  
                 else:
@@ -642,13 +662,15 @@ def update():
                     record.price = updated_data["price"]
                     record.stock = updated_data["stock"]
                     record.category = updated_data["category"]
+
                     db.session.commit()
                     status= "true"  
                 else:
                     status= "false"  
 
+
     except json.JSONDecodeError as e:
-        return f"Invalid JSON: {e}", 400   ##Showing error if JSON is invalid
+        return f"Incorrectly written JSON: {e}", 400   ##Showing error if JSON is invalid
     except Exception as e:
         return f"Error: {e}", 500   ##Showing error in case of other exception error
     
@@ -704,6 +726,7 @@ def delete():
             elif table_choice== "Orders":
                     
                 del_status = orders_eu.delete_one({"_id": row_ID})
+                
                 if del_status.deleted_count > 0:
                     status= "true"
                 else:
