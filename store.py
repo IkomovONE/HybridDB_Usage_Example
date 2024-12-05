@@ -9,50 +9,79 @@ import json
 app = Flask(__name__)    #Using Flask to initialize frontend server
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///asia.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///asia.db'   ##Connecting to SQLite database
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False          
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app)   ## Using SQLAlchemy for managing SQL database
 
 
-class User(db.Model):
-    __tablename__ = 'Users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    location = db.Column(db.String(100), nullable=False)
-    created_at = db.Column(db.Date, nullable=False)
+##Next 4 classes represent typical DB entry in each of the 4 SQL DB tables
+
+class User(db.Model):     
+    __tablename__ = 'Users'   ## Table "Users"
+
+    id = db.Column(db.Integer, primary_key=True)   ## id column
+
+    name = db.Column(db.String(100), nullable=False)  ## name column
+
+    email = db.Column(db.String(100), unique=True, nullable=False)  ## email column
+
+    location = db.Column(db.String(100), nullable=False)  ## location column
+
+    created_at = db.Column(db.Date, nullable=False)  ## date column
 
 class Seller(db.Model):
-    __tablename__ = 'Sellers'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    store_name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    sales_region = db.Column(db.String(100), nullable=False)
-    created_at = db.Column(db.Date, nullable=False)
+    __tablename__ = 'Sellers'    ## Table "Sellers"
+
+    id = db.Column(db.Integer, primary_key=True)   ## id column
+
+    name = db.Column(db.String(100), nullable=False)   ## name column
+
+    store_name = db.Column(db.String(100), nullable=False)  ## store name column
+
+    email = db.Column(db.String(100), unique=True, nullable=False)  ## email column
+
+    sales_region = db.Column(db.String(100), nullable=False)  ## sales region column
+
+    created_at = db.Column(db.Date, nullable=False)  ## date column
 
 class Product(db.Model):
-    __tablename__ = 'Products'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    stock = db.Column(db.Integer, nullable=False)
-    category = db.Column(db.String(100), nullable=False)
+    __tablename__ = 'Products'   ## Table "Products"
+
+    id = db.Column(db.Integer, primary_key=True)    ## id column
+
+    name = db.Column(db.String(100), nullable=False)   ## name column
+
+    price = db.Column(db.Float, nullable=False)    ## price column
+
+    stock = db.Column(db.Integer, nullable=False)    ## stock column
+
+    category = db.Column(db.String(100), nullable=False)    ## category column
 
 
 class Order(db.Model):
-    __tablename__ = 'Orders'
-    id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.String(100), nullable=False)  # Assuming TEXT maps to String
-    sellerName = db.Column(db.String(100), nullable=False)
-    productNames = db.Column(db.String(1000), nullable=False)  # To store multiple product names as a comma-separated string
-    Quantity = db.Column(db.Integer, nullable=False)
-    orderDate = db.Column(db.String(100), nullable=False)
+    __tablename__ = 'Orders'     ## Table "Orders"
 
-client = MongoClient("localhost:27017")     #Setting up mongoDB to connect to databases
+    id = db.Column(db.Integer, primary_key=True)   ## id column
 
-europe_db = client["Europe"]     #Establishing 3 databases, 3 continents
+    userID = db.Column(db.String(100), nullable=False)    ## userID column
+
+    sellerName = db.Column(db.String(100), nullable=False)   ## seller name column
+
+    productNames = db.Column(db.String(1000), nullable=False)  ## products names column
+
+    Quantity = db.Column(db.Integer, nullable=False)   ## quantity column
+
+    orderDate = db.Column(db.String(100), nullable=False)  ## date column
+
+
+
+##Initializing mongoDB
+
+
+client = MongoClient("localhost:27017")     #Setting up mongoDB to connect to database
+
+europe_db = client["Europe"]     #Establishing "europe" database
 
 
 
@@ -63,17 +92,21 @@ orders_eu = europe_db["Orders"]   #orders
 
 
 
-@app.route("/", methods=["GET", "POST"])    #creating a route
+#### Main route (main page)
+
+@app.route("/", methods=["GET", "POST"])    ## Establishing route
 def home():
 
-    users = list(users_eu.find({}))           
-    sellers = list(sellers_eu.find({}))      
-    products = list(products_eu.find({}))
-    orders = list(orders_eu.find({}))
+    #Establishing default queries for showing all databases even if the choice for displaying specific thing hasn't been made
+
+    users = list(users_eu.find({}))           ## find all user entries
+    sellers = list(sellers_eu.find({}))      ## find all sellers entries
+    products = list(products_eu.find({}))    ## find all products entries
+    orders = list(orders_eu.find({}))       ## find all orders entries
 
 
 
-    users_SQL = [
+    users_SQL = [    ## creating SQL query for user
         {
             "_id": user.id,
             "name": user.name,
@@ -84,7 +117,7 @@ def home():
         for user in User.query.all()
     ]
 
-    sellers_SQL = [
+    sellers_SQL = [      ## creating SQL query for sellers
         {
             "_id": seller.id,
             "s_name": seller.name,
@@ -96,7 +129,7 @@ def home():
         for seller in Seller.query.all()
     ]
 
-    products_SQL = [
+    products_SQL = [     ## creating SQL query for products
         {
             "_id": product.id,
             "name": product.name,
@@ -107,7 +140,7 @@ def home():
         for product in Product.query.all()
     ]
 
-    orders_SQL = [
+    orders_SQL = [      ## creating SQL query for orders
         {
             "_id": order.id,
             "user_id": order.userID,
@@ -119,7 +152,7 @@ def home():
         for order in Order.query.all()
     ]
 
-    for i in users_SQL:
+    for i in users_SQL:     #adding SQL entries together with noSQL
         users.append(i)
 
     for i in sellers_SQL:
@@ -131,9 +164,9 @@ def home():
     for i in products_SQL:
         products.append(i)
 
-    db_choice= "All databases"
+    db_choice= "All databases"    #default choice
 
-    render_template("index.html", users=users, sellers=sellers, products=products, orders=orders, db_choice=db_choice) 
+    render_template("index.html", users=users, sellers=sellers, products=products, orders=orders, db_choice=db_choice) #rendering index page
 
 
 
@@ -141,14 +174,14 @@ def home():
 
 
 
-    if request.method == "POST":
+    if request.method == "POST":  #using POST method
 
         
 
-        db_choice = request.form["db_choice"]   #Using POST method
+        db_choice = request.form["db_choice"]   #getting info from request HTML form
 
         
-        if db_choice == "Europe(noSQL)":
+        if db_choice == "Europe(noSQL)":   #noSQL query
             
             users = list(users_eu.find({}))  
             sellers = list(sellers_eu.find({}))      
@@ -156,8 +189,8 @@ def home():
             orders = list(orders_eu.find({}))
 
         elif db_choice == "Asia(SQL)":
-        # Fetch data from SQL tables using SQLAlchemy
-            users = [
+        
+            users = [        ## creating SQL query for users
                 {
                     "_id": user.id,
                     "name": user.name,
@@ -168,7 +201,7 @@ def home():
                 for user in User.query.all()
             ]
 
-            sellers = [
+            sellers = [         ## creating SQL query for sellers
                 {
                     "_id": seller.id,
                     "s_name": seller.name,
@@ -180,7 +213,7 @@ def home():
                 for seller in Seller.query.all()
             ]
 
-            products = [
+            products = [         ## creating SQL query for products
                 {
                     "_id": product.id,
                     "name": product.name,
@@ -191,7 +224,7 @@ def home():
                 for product in Product.query.all()
             ]
 
-            orders = [
+            orders = [        ## creating SQL query for orders
                 {
                     "_id": order.id,
                     "user_id": order.userID,
@@ -203,7 +236,7 @@ def home():
                 for order in Order.query.all()
             ]
 
-        elif db_choice == "All databases":
+        elif db_choice == "All databases":    ##All databases query, both SQL and noSQL
             
             users = list(users_eu.find({}))  
             sellers = list(sellers_eu.find({}))      
@@ -258,7 +291,7 @@ def home():
                 for order in Order.query.all()
             ]
 
-            for i in users_SQL:
+            for i in users_SQL:    ##Adding SQL rows to noSQL
                 users.append(i)
 
             for i in sellers_SQL:
@@ -273,25 +306,25 @@ def home():
 
              
 
-    return render_template("index.html", users=users, sellers=sellers, products=products, orders=orders, db_choice=db_choice)  
+    return render_template("index.html", users=users, sellers=sellers, products=products, orders=orders, db_choice=db_choice)  ##Rendering index page
 
 
 
 
 
 
+#### Create route (making new entries)
 
 
-
-@app.route("/create", methods=["GET", "POST"])
+@app.route("/create", methods=["GET", "POST"])   ##This route is for inserting rows
 
 def create():
 
-    status= ""
+    status= ""   ##Implementing status variable as a simple indication of either success or error
 
-    if request.method == "POST":
+    if request.method == "POST":   ##using POST method
 
-        db_choice = request.form["db_choice"]
+        db_choice = request.form["db_choice"]   ##Getting choices information about db choice, table choice and new entry string
 
         table_choice = request.form["table_choice"]
 
@@ -303,18 +336,18 @@ def create():
 
 
         try:
-            # Convert JSON string to a Python list
-            data_list = json.loads(json_lines)
+            
+            data_list = json.loads(json_lines)   #Trying to convert list string to JSON
 
 
 
-            if db_choice == "Europe(noSQL)":
+            if db_choice == "Europe(noSQL)":   
 
                 
 
                 if table_choice== "Users":
                     
-                    users_eu.insert_many(data_list)
+                    users_eu.insert_many(data_list)   ##Inserting the data to noSQL
 
                 elif table_choice== "Sellers":
                     
@@ -337,10 +370,10 @@ def create():
                 if table_choice== "Users":
                     
                     for row in data_list:
-                        created_at_date = datetime.strptime(row["created_at"], "%Y-%m-%d").date()
+                        created_at_date = datetime.strptime(row["created_at"], "%Y-%m-%d").date()  ##Parsing date into specific format
 
                         new_user = User(
-                            id=row.get("_id"),  # Use .get() to avoid KeyErrors
+                            id=row.get("_id"),  # Inserting to SQL DB using new object initialization through earlier made class
                             name=row["name"],
                             email=row["email"],
                             location=row["location"],
@@ -368,21 +401,21 @@ def create():
                     for entry in data_list:
 
                         created_at_date = datetime.strptime(entry["created_at"], "%Y-%m-%d").date()
-                        new_product = Product(
+                        new_order = Product(
                             id=entry.get("_id"),
                             name=entry["name"],
                             price=entry["price"],
                             stock=entry["stock"],
                             category=created_at_date
                         )
-                        db.session.add(new_product)
+                        db.session.add(new_order)
 
                 elif table_choice== "Products":
                     
                     for entry in data_list:
 
                         created_at_date = datetime.strptime(entry["created_at"], "%Y-%m-%d").date()
-                        new_order = Order(
+                        new_product = Order(
                             id=entry.get("_id"),
                             user_id=entry["user_id"],
                             seller_name=entry["seller_name"],
@@ -390,15 +423,15 @@ def create():
                             quantity=entry["quantity"],
                             order_date=created_at_date
                         )
-                        db.session.add(new_order)
+                        db.session.add(new_product)
 
                     
 
                 
-                db.session.commit()
+                db.session.commit()  ##Commiting changes to SQL database
                 status= "true"
 
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError as e:   #Simple error handling
             print(e)
             status = "false"
 
@@ -406,7 +439,7 @@ def create():
 
 
         pass
-    return render_template("create.html", success=status)
+    return render_template("create.html", success=status)   ##Rendering row insertion html page 
 
 
 
@@ -414,7 +447,9 @@ def create():
 
 
 
+#### Edit route (for updating existing row)
 
+##There are 2 routes used for editing: the one below is for searching for the specific table row, next one is for editing it. 
 
 
 
@@ -424,15 +459,15 @@ def edit():
 
     if request.method == "POST":
 
-        db_choice = request.form["db_choice"]
+        db_choice = request.form["db_choice"]   ##Getting form information
 
         table_choice = request.form["table_choice"]
 
         row_ID = request.form["row_ID"]
 
         try:
-            # Fetch data based on database and table choice
-            if db_choice == "Europe(noSQL)":
+            
+            if db_choice == "Europe(noSQL)":   ##Finding the row in mongoDB
                 if table_choice == "Users":
                     record = users_eu.find_one({"_id": row_ID}) 
                 elif table_choice == "Sellers":
@@ -444,8 +479,8 @@ def edit():
 
             elif db_choice == "Asia(SQL)":
                 if table_choice == "Users":
-                    record = User.query.get(row_ID)  # Fetch SQLAlchemy row
-                    record = {
+                    record = User.query.get(row_ID)  ## Finding the row in SQL database
+                    record = {     ##Initializing simple structure for fetching
                         "id": record.id,
                         "name": record.name,
                         "email": record.email,
@@ -454,7 +489,7 @@ def edit():
                     }
 
                 if table_choice == "Sellers":
-                    record = Seller.query.get(row_ID)  # Fetch SQLAlchemy row
+                    record = Seller.query.get(row_ID)  
                     record = {
 
                         "id": record.id,
@@ -467,7 +502,7 @@ def edit():
                     }
 
                 if table_choice == "Orders":
-                    record = Order.query.get(row_ID)  # Fetch SQLAlchemy row
+                    record = Order.query.get(row_ID)  
                     record = {
                         "id": record.id,
                         "userId": record.userID,
@@ -478,7 +513,7 @@ def edit():
                     }
 
                 if table_choice == "Products":
-                    record = Product.query.get(row_ID)  # Fetch SQLAlchemy row
+                    record = Product.query.get(row_ID)  
                     record = {
 
                         "id": record.id,
@@ -489,43 +524,47 @@ def edit():
                     }
 
             if record:
-                return render_template("update-form.html", record=record, db_choice=db_choice, table_choice=table_choice)
+                return render_template("update-form.html", record=record, db_choice=db_choice, table_choice=table_choice)  ##Rendering update form page
             else:
-                return "Record not found", 404
+                return "Record not found", 404   ##Showing that the record is not found
 
         except Exception as e:
-            return f"Error: {e}", 500
+            return f"Error: {e}", 500  ##Showing error in case of an exception
 
-    return render_template("edit.html") 
+    return render_template("edit.html") ##Rendering initial edit search page
 
 
 
-@app.route("/update", methods=["POST"])
+#### Update route (for updating existing row)
+
+@app.route("/update", methods=["POST"])   ##this route is for updating the entry that has been found
 def update():
     db_choice = request.form["db_choice"]
     table_choice = request.form["table_choice"]
     json_data = request.form["json_data"]
-    status= ""
+    status= ""   #status for either success or error
 
     try:
-        # Parse JSON input
-        updated_data = json.loads(json_data)
+        
+        updated_data = json.loads(json_data)   #trying to parse the edited string to JSON
 
-        if db_choice == "Europe(noSQL)":
-            if table_choice == "Users":
-                result = users_eu.update_one(
-                    {"_id": updated_data["_id"]},  # Match by ID
-                    {"$set": updated_data}         # Update fields
+        if db_choice == "Europe(noSQL)":    ##Again, using if condition for doing either SQL or noSQL work
+
+            if table_choice == "Users":    
+
+                result = users_eu.update_one(    ##Updating the existing entry using _id
+                    {"_id": updated_data["_id"]},  
+                    {"$set": updated_data}         
                 )
-                if result.matched_count > 0:
+                if result.matched_count > 0:   ##Determining status based on the result
                     status= "true" 
                 else:
                     status= "false"
 
             if table_choice == "Sellers":
                 result = sellers_eu.update_one(
-                    {"_id": updated_data["_id"]},  # Match by ID
-                    {"$set": updated_data}         # Update fields
+                    {"_id": updated_data["_id"]},  
+                    {"$set": updated_data}         
                 )
                 if result.matched_count > 0:
                     status= "true" 
@@ -534,8 +573,8 @@ def update():
 
             if table_choice == "Orders":
                 result = orders_eu.update_one(
-                    {"_id": updated_data["_id"]},  # Match by ID
-                    {"$set": updated_data}         # Update fields
+                    {"_id": updated_data["_id"]},  
+                    {"$set": updated_data}         
                 )
                 if result.matched_count > 0:
                     status= "true" 
@@ -544,8 +583,8 @@ def update():
 
             if table_choice == "Products":
                 result = products_eu.update_one(
-                    {"_id": updated_data["_id"]},  # Match by ID
-                    {"$set": updated_data}         # Update fields
+                    {"_id": updated_data["_id"]},  
+                    {"$set": updated_data}         
                 )
                 if result.matched_count > 0:
                     status= "true" 
@@ -555,19 +594,21 @@ def update():
         elif db_choice == "Asia(SQL)":
 
             if table_choice == "Users":
-                record = User.query.get(updated_data["id"])  # Match by ID
-                if record:
+
+                record = User.query.get(updated_data["id"])  ##Getting user record using id
+
+                if record:   ##If record is found set new values
                     record.name = updated_data["name"]
                     record.email = updated_data["email"]
                     record.location = updated_data["location"]
                     record.created_at = datetime.strptime(updated_data["created_at"], "%Y-%m-%d").date()
-                    db.session.commit()
+                    db.session.commit()  ##Commiting the update
                     status= "true"  
                 else:
                     status= "false"  
 
             if table_choice == "Sellers":
-                record = Seller.query.get(updated_data["id"])  # Match by ID
+                record = Seller.query.get(updated_data["id"])  
                 if record:
                     record.id = updated_data["id"]
                     record.name = updated_data["name"]
@@ -581,7 +622,7 @@ def update():
                     status= "false"  
 
             if table_choice == "Orders":
-                record = Order.query.get(updated_data["id"])  # Match by ID
+                record = Order.query.get(updated_data["id"])  
                 if record:
                     record.id = updated_data["id"]
                     record.userID = updated_data["userID"]
@@ -594,7 +635,7 @@ def update():
                     status= "false"  
 
             if table_choice == "Products":
-                record = Product.query.get(updated_data["id"])  # Match by ID
+                record = Product.query.get(updated_data["id"])  
                 if record:
                     record.id = updated_data["id"]
                     record.name = updated_data["name"]
@@ -607,12 +648,12 @@ def update():
                     status= "false"  
 
     except json.JSONDecodeError as e:
-        return f"Invalid JSON: {e}", 400
+        return f"Invalid JSON: {e}", 400   ##Showing error if JSON is invalid
     except Exception as e:
-        return f"Error: {e}", 500
+        return f"Error: {e}", 500   ##Showing error in case of other exception error
     
 
-    return render_template("update-form.html", status= status, record= "success") 
+    return render_template("update-form.html", status= status, record= "success")  ##Rendering update-form page
 
 
 
@@ -620,9 +661,14 @@ def update():
 
 
 
-@app.route("/delete", methods=["GET", "POST"])
 
-def delete():
+
+#### Delete route
+
+
+@app.route("/delete", methods=["GET", "POST"])   ##Route used to delete rows based on ID
+
+def delete():   
 
     status= ""
 
@@ -632,16 +678,16 @@ def delete():
 
         table_choice = request.form["table_choice"]
 
-        row_ID = request.form["row_ID"]
+        row_ID = request.form["row_ID"]   ##Getting ID of the row to be deleted
         
         
         if db_choice == "Europe(noSQL)":
 
             if table_choice== "Users":
                     
-                del_status = users_eu.delete_one({"_id": row_ID})
+                del_status = users_eu.delete_one({"_id": row_ID})  ##Deleting the row based on the given ID
 
-                if del_status.deleted_count > 0:
+                if del_status.deleted_count > 0:   ##Determining status based on deletion status
                     status= "true"
                 else:
                     status= "false"
@@ -676,12 +722,12 @@ def delete():
         if db_choice == "Asia(SQL)":
             
             if table_choice== "Users":
-                row = User.query.get(row_ID)  # Find by primary key
+                row = User.query.get(row_ID)  ##Getting the row with ID
                 if row:
 
-                    db.session.delete(row)
+                    db.session.delete(row)  ##Deleting the row
 
-                    db.session.commit()
+                    db.session.commit()  ##Commiting changes
 
                     status= "true"
                 else:
@@ -689,7 +735,7 @@ def delete():
             
             elif table_choice== "Sellers":
 
-                row = Seller.query.get(row_ID)  # Find by primary key
+                row = Seller.query.get(row_ID)  
                 if row:
 
                     db.session.delete(row)
@@ -704,7 +750,7 @@ def delete():
 
             elif table_choice== "Orders":
 
-                row = Order.query.get(row_ID)  # Find by primary key
+                row = Order.query.get(row_ID)  
                 if row:
 
                     db.session.delete(row)
@@ -718,7 +764,7 @@ def delete():
 
             elif table_choice== "Products":
 
-                row = Product.query.get(row_ID)  # Find by primary key
+                row = Product.query.get(row_ID)  
                 if row:
 
                     db.session.delete(row)
@@ -733,7 +779,7 @@ def delete():
 
 
         pass
-    return render_template("delete.html", success=status)
+    return render_template("delete.html", success=status)  ##Rendering the delete form page
 
 
 
